@@ -20,21 +20,36 @@ class ProfileCard extends StatelessWidget {
 // Scaffold
 class ProfileCardView extends StatelessWidget {
   const ProfileCardView({super.key});
-  static const TextStyle label = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-    color: Color.fromARGB(77, 66, 55, 55),
-  );
-  static const TextStyle title = TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
-    color: Color.fromARGB(77, 255, 255, 255),
-  );
+  
+  static const Color primaryColor = Color.fromARGB(255, 4, 11, 46);
+  static const Color secondaryColor = Colors.amber;
+  
+  Widget cardItem({
+    required IconData icon,
+    required String text,
+  }) {
+    return Card(
+      elevation: 8,
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      color: Colors.white.withOpacity(0.9),
+      child: ListTile(
+        leading: Icon(icon, color: primaryColor),
+        title: Text(
+          text,
+          style: TextStyle(
+            letterSpacing: 1.2345,
+            color: primaryColor,
+            fontWeight: FontWeight.w500
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 4, 11, 46),
+      backgroundColor: primaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -48,40 +63,45 @@ class ProfileCardView extends StatelessWidget {
               ),
             ),
             Container(margin: EdgeInsets.only(bottom: 20.0)),
-            Text('Nama',
+            Text(
+              'Luhung Lugina',
               style: GoogleFonts.poppins(
                 fontSize: 32,
-                color: Colors.amber,
-                fontWeight: FontWeight.w300
+                color: secondaryColor,
+                fontWeight: FontWeight.w500
               ),
             ),
-            Text('Jabatan', 
+            Text(
+              'ALPEMDAS', 
               style: GoogleFonts.poppins(
                 fontSize: 20,
-                color: Colors.amber,
+                color: secondaryColor,
                 fontWeight: FontWeight.w300
               )
             ),
-            SizedBox(
+            const SizedBox(
               width: 50,
-              height: 5,
-              child: Divider(thickness: 3),
-            ),
-            Card(
-              margin: EdgeInsets.symmetric(vertical: 30.0),
-              child: ListTile(
-                leading: Icon(Icons.phone_bluetooth_speaker),
-                title: Text('0872-7272-7277 WYSI'),
+              height: 35,
+              child: Divider(
+                thickness: 3,
+                color: secondaryColor,
               ),
             ),
-            Card(
-              child: ListTile(
-                leading: Icon(Icons.mark_email_read_outlined),
-                title: Text(
-                  'bwabawbaab@gmail.com',
-                  style: TextStyle(letterSpacing: 1.122),
-                ),
-              ),
+            cardItem(
+              icon: Icons.phone,
+              text: '0872-7272-7277',
+            ),
+            cardItem(
+              icon: Icons.mark_email_read_outlined,
+              text: 'wysi@gmail.com',
+            ),
+            cardItem(
+              icon: Icons.facebook,
+              text: 'facebook.com/llsed',
+            ),
+            cardItem(
+              icon: Icons.link,
+              text: 'github.com/RhyneeAI',
             ),
           ],
         ),
