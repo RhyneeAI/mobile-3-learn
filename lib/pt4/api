@@ -1,0 +1,32 @@
+import 'dart:convert';
+
+import 'package:per4/Model/makanan_model.dart';
+import 'package:http/http.dart' as http;
+
+class ApiService{
+  // link api
+  static const _url = "https://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian";
+
+  // sekarang ambil data api tersebut
+  Future<List<Makanan>> fetchMakanan() async{
+
+    try {
+      // cek respon api
+      final respon = await http.get(Uri.parse(_url));
+
+      // ketika berhasil
+      if(respon.statusCode == 200){
+        // json
+        final Map<String, dynamic> json = jsonDecode(respon.body);
+        final List<dynamic> makananJson = json["meals"];
+        return makananJson.map((json) => Makanan.fromJson(json)).toList();
+      }
+      // ketika gagal
+      else{
+        throw Exception("Koneksi Gagal");
+      }
+    } catch (e) {
+      throw Exception("koneksi Eror");
+    }
+  }
+}
