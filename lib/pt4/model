@@ -1,0 +1,19 @@
+class Makanan{
+  // 3 variabel
+
+  String? nama;
+  String? img;
+  String? rank;
+
+  Makanan({
+    required this.nama,this.img,this.rank
+  });
+
+  factory Makanan.fromJson(Map<String, dynamic> json){
+    return Makanan(
+      nama:json['strMeal'],
+      img :json['strMealThumb'],
+      rank:json['idMeal']
+    );
+  }
+}
