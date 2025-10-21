@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'package:per4/API/makanan_api.dart';
+import 'package:per4/Model/makanan_model.dart';
+
+void main() {
+  runApp(DaftarMakanan());
+}
+
+//materialApp sama Scaffold
+class DaftarMakanan extends StatelessWidget {
+  const DaftarMakanan({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Aplikasi Menu", //judul
+      home: TampilanDaftarMakanan(), //memanggil tampilan
+    );
+  }
+}
+
+//membuat scaffold
+class TampilanDaftarMakanan extends StatefulWidget {
+  const TampilanDaftarMakanan({super.key});
+
+  @override
+  State<TampilanDaftarMakanan> createState() => _TampilanDaftarMakananState();
+}
+
+class _TampilanDaftarMakananState extends State<TampilanDaftarMakanan> {
+  late Future<List<Makanan>> _makananFuture;
+
+  //sekarang kita membuat function untuk mengambil data dari API langsung
+  //ketika tampilan ini (scaffold) dimuat
+
+  @override
+  void initState() {
+    super.initState();
+    _makananFuture = ApiService().fetchMakanan();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.amber,
+        title: Text("Menu Makanan"),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Text("Daftar Menu Makanan"),
+
+            //disini kita akan menampilkan data-data yang
+            //didapat dari internet (menggunakan API)
+            FutureBuilder<List<Makanan>>(
+              future: _makananFuture,
+              builder: (context, snapshot) {
+                //pengecekan apakah data ada / ngakada
+                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  //ada
+                  //tampung dulu datanya
+                  final makanans = snapshot.data!; //data list (banyak)
+                  return Expanded(
+                    child: ListView.builder(
+                    itemCount: makanans.length,
+                    itemBuilder: (context, index) {
+                      //pisahin dulu datanya
+                      final makanan =
+                          makanans[index]; //memisahkan data (jadi 1 per 1 data)
+                      return Card(
+                        child: ListTile(
+                          leading: Image(image: NetworkImage(makanan.img!)),
+                          title: Text(makanan.nama!),
+                          subtitle: Text(makanan.rank!),
+                        ),
+                      );
+                    },
+                  ),
+                    );
+                } else {
+                  //datanya ngak ada
+                  return Text("Data Tidak Tersedia");
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
